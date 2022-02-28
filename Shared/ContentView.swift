@@ -386,7 +386,7 @@ struct ContentView: View {
 				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "%", lineValue: runningTotal))
 				currentNumber = "0"
 			case "=":
-					logRoll.append(logLine(lineNotes: "End of Roll", lineText: String(runningTotal), lineSign: "=", lineValue: runningTotal))
+				logRoll.append(logLine(lineNotes: "End of Roll", lineText: String(runningTotal), lineSign: "=", lineValue: runningTotal))
 			default:
 				print("An error occurred. You shouldn't be able to get here.")
 		}
