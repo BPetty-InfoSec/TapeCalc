@@ -76,11 +76,11 @@ struct ContentView: View {
 								.frame(minWidth: 2, maxWidth: 2)
 						}
 						.frame(maxWidth: .infinity)
-						.border(Color.gray, width: 1)
+						.foregroundColor(Color.black)
 					}
+					.background(Color.white)
+
 				}
-				.background(.white)
-				.listStyle(SidebarListStyle())
 				
 				Text(currentNumber)
 					.font(.system(size: 20, weight: .light))
