@@ -13,6 +13,8 @@
 		D311C08127CAF09B0093F0B5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D311C06F27CAF09A0093F0B5 /* ContentView.swift */; };
 		D311C08227CAF09B0093F0B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D311C07027CAF09B0093F0B5 /* Assets.xcassets */; };
 		D311C08327CAF09B0093F0B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D311C07027CAF09B0093F0B5 /* Assets.xcassets */; };
+		D311C08D27CAF2D20093F0B5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D311C08C27CAF2D20093F0B5 /* README.md */; };
+		D311C08E27CAF2D20093F0B5 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D311C08C27CAF2D20093F0B5 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,7 @@
 		D311C07527CAF09B0093F0B5 /* TapeCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TapeCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D311C07B27CAF09B0093F0B5 /* TapeCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TapeCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D311C07D27CAF09B0093F0B5 /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		D311C08C27CAF2D20093F0B5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +60,7 @@
 				D311C06E27CAF09A0093F0B5 /* TapeCalcApp.swift */,
 				D311C06F27CAF09A0093F0B5 /* ContentView.swift */,
 				D311C07027CAF09B0093F0B5 /* Assets.xcassets */,
+				D311C08C27CAF2D20093F0B5 /* README.md */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -157,6 +161,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D311C08D27CAF2D20093F0B5 /* README.md in Resources */,
 				D311C08227CAF09B0093F0B5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,6 +170,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D311C08E27CAF2D20093F0B5 /* README.md in Resources */,
 				D311C08327CAF09B0093F0B5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
