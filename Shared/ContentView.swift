@@ -33,7 +33,6 @@ struct ContentView: View {
 	let buttonSize: CGFloat = 50
 	
 	@State var currentNumber: String = "0"
-//	@State var prevNumber: Double = 0.0
 	@State var usingSign: String = "+"
 	@State var runningTotal: Double = 0.0
 	@State var logRoll: [logLine] = [logLine(lineNotes: "Begin Tape Run", lineText: "0", lineSign: "", lineValue: 0)]
@@ -338,9 +337,11 @@ struct ContentView: View {
 			}
 			Spacer()
 		}
-		.frame(maxWidth: .infinity, maxHeight: .infinity)
+		.frame(minWidth: 300, maxWidth: 600, maxHeight: .infinity)
     }
 	
+	/// doPress(keyPressed as String) - Logic to handle buttons pressed on calculator
+	/// - Parameter keyPressed: Text showing which button was pressed
 	func doPress(keyPressed: String) {
 		
 		if currentNumber == "0" {
@@ -348,14 +349,18 @@ struct ContentView: View {
 				currentNumber = ""
 			}
 		}
+//		This switch statement contains the logic for button presses
 		switch keyPressed {
+//			Handle numbers and decimals being pressed
 			case "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "00", ".":
 				currentNumber += keyPressed
 			case "AC":
+//				Handle the AC button, clearing the tape roll, etc.
 				logRoll.removeAll()
 				currentNumber = "0"
 				runningTotal = 0.0
 				logRoll.append(logLine(lineNotes: defaultLogLine.lineNotes, lineText: defaultLogLine.lineText, lineSign: defaultLogLine.lineSign, lineValue: defaultLogLine.lineValue))
+//			Switch the sign for the current number
 			case "+-":
 				if currentNumber[currentNumber.startIndex] == "-" {
 					currentNumber.remove(at: currentNumber.startIndex)
@@ -366,33 +371,42 @@ struct ContentView: View {
 						currentNumber = "-" + currentNumber
 					}
 				}
+//			Handle addition
 			case "+":
 				runningTotal += Double(currentNumber)!
 				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "+", lineValue: runningTotal))
 				currentNumber = "0"
+//			Handle subtraction
 			case "-":
 				runningTotal = runningTotal - Double(currentNumber)!
 				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "-", lineValue: runningTotal))
 				currentNumber = "0"
+//			Handle multiplication
 			case "*":
 				runningTotal = runningTotal * Double(currentNumber)!
 				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "X", lineValue: runningTotal))
 				currentNumber = "0"
+//			Handle division
 			case "/":
 				runningTotal = runningTotal / Double(currentNumber)!
 				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "/", lineValue: runningTotal))
 				currentNumber = "0"
+//			Handle percentages
 			case "%":
 				runningTotal = runningTotal * (Double(currentNumber)!/100)
 				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "%", lineValue: runningTotal))
 				currentNumber = "0"
+//			Handle totalling the current run
 			case "=":
 				logRoll.append(logLine(lineNotes: "End of Roll", lineText: String(runningTotal), lineSign: "=", lineValue: runningTotal))
+//			Error trapping. This should never be triggered.
 			default:
 				print("An error occurred. You shouldn't be able to get here.")
 		}
 	}
 	
+	/// Function for editing the notes on a line of the tape roll
+	/// - Parameter lineID: This is the UUID assigned to the line when created.
 	func editNote(lineID: UUID) {
 		
 	}
