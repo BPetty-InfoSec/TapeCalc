@@ -438,7 +438,8 @@ struct ContentView: View {
 	/// Function for editing the notes on a line of the tape roll
 	/// - Parameter lineID: This is the UUID assigned to the line when created.
 	func editNote(lineID: UUID) {
-		
+		// Pops up a view that allows text to be entered and/or edited
+		// Also needs cancel and done buttons.
 	}
 }
 
