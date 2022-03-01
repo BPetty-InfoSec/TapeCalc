@@ -105,6 +105,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut(.cancelAction)
 
 						Button {
 							doPress(keyPressed: "+-")
@@ -115,6 +116,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("-", modifiers: .command)
 
 						Button {
 							doPress(keyPressed: "%")
@@ -125,6 +127,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("%", modifiers: [.shift])
 
 						Spacer()
 							.frame(maxWidth: 20)
@@ -138,6 +141,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("/", modifiers: [])
 					}
 
 					HStack {
@@ -152,6 +156,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("7", modifiers: [])
 
 						Button {
 							doPress(keyPressed: "8")
@@ -163,6 +168,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("8", modifiers: [])
 						
 						Button {
 							doPress(keyPressed: "9")
@@ -174,6 +180,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("9", modifiers: [])
 						
 						Spacer()
 							.frame(maxWidth: 20)
@@ -187,8 +194,12 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("*", modifiers: [.shift])
+						.keyboardShortcut("x", modifiers: [])
 					}
+					
 					HStack {
+					
 						Button {
 							doPress(keyPressed: "4")
 						} label: {
@@ -199,6 +210,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("4", modifiers: [])
 
 						Button {
 							doPress(keyPressed: "5")
@@ -210,6 +222,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("5", modifiers: [])
 
 						Button {
 							doPress(keyPressed: "6")
@@ -221,6 +234,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("6", modifiers: [])
 
 						Spacer()
 							.frame(maxWidth: 20)
@@ -234,6 +248,8 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("-", modifiers: [])
+						
 					}
 
 					HStack {
@@ -248,6 +264,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("1", modifiers: [])
 
 						Button {
 							doPress(keyPressed: "2")
@@ -259,6 +276,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("2", modifiers: [])
 
 						Button {
 							doPress(keyPressed: "3")
@@ -270,6 +288,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("3", modifiers: [])
 
 						Spacer()
 							.frame(maxWidth: 20)
@@ -283,6 +302,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("+", modifiers: [.shift])
 					}
 
 					HStack {
@@ -297,6 +317,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("0", modifiers: .command)
 
 						Button {
 							doPress(keyPressed: "0")
@@ -308,6 +329,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut("0", modifiers: [])
 
 						Button {
 							doPress(keyPressed: ".")
@@ -319,6 +341,7 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut(".", modifiers: [])
 
 						Spacer()
 							.frame(maxWidth: 20)
@@ -332,10 +355,17 @@ struct ContentView: View {
 								.clipShape(Capsule())
 						}
 						.buttonStyle(PlainButtonStyle())
+						.keyboardShortcut(.defaultAction)
+						.keyboardShortcut("=", modifiers: [])
+						
 					}
+					
 				}
+				
 			}
+			
 			Spacer()
+			
 		}
 		.frame(minWidth: 300, maxWidth: 600, maxHeight: .infinity)
     }
