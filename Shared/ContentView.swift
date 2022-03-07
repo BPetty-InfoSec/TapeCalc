@@ -37,6 +37,9 @@ struct ContentView: View {
 	@State var runningTotal: Double = 0.0
 	@State var logRoll: [logLine] = [logLine(lineNotes: "Begin Tape Run", lineText: "0", lineSign: "", lineValue: 0)]
 	
+	@State var showingPopover: Bool = false
+	@State var tempNote: String = ""
+	
     var body: some View {
 		
 		VStack {
@@ -44,42 +47,84 @@ struct ContentView: View {
 			Section {
 				
 				List {
-					ForEach(logRoll) { line in
-						HStack(spacing: 5) {
-							Button {
-								editNote(lineID: line.id)
-							} label: {
-								Image(systemName: "pencil.circle")
+					Section {
+						ForEach(logRoll) { line in
+							HStack(spacing: 5) {
+								Button {
+									showingPopover = true
+									editNote(lineID: line.id)
+								} label: {
+									Image(systemName: "pencil.circle")
+								}
+								.frame(alignment: .leading)
+								.popover(isPresented: $showingPopover) {
+									VStack {
+										
+										Text("Enter the note for this line")
+										TextField("Enter the note for this line", text: $tempNote)
+										HStack {
+											Button {
+												showingPopover = false
+											} label: {
+												Text("Cancel")
+											}
+											.keyboardShortcut(.cancelAction)
+											
+											Button {
+												showingPopover = false
+											} label: {
+												Text("Done")
+											}
+											.keyboardShortcut(.defaultAction)
+										}
+									}
+								}
+							
+								Spacer()
+									.frame(minWidth: 5, maxWidth: 15)
+								
+								Text(line.lineNotes!)
+									.frame(alignment: .center)
+								
+								Spacer()
+									.frame(minWidth: 5, maxWidth: 500)
+								
+								Text(line.lineText!)
+									.frame(alignment: .trailing)
+								
+								Spacer()
+									.frame(minWidth: 5, maxWidth: 10)
+								
+								switch line.lineSign! {
+									case "+":
+										Image(systemName: "plus")
+									case "-":
+										Image(systemName: "minus")
+									case "/":
+										Image(systemName: "divide")
+									case "X":
+										Image(systemName: "multiply")
+									case "=":
+										Image(systemName: "equal")
+									default:
+										Image(systemName: "scroll")
+								}
+															
+								Spacer()
+									.frame(minWidth: 2, maxWidth: 2)
 							}
-							.frame(alignment: .leading)
-							
-							Spacer()
-								.frame(minWidth: 5, maxWidth: 15)
-							
-							Text(line.lineNotes!)
-								.frame(alignment: .center)
-							
-							Spacer()
-								.frame(minWidth: 5, maxWidth: 500)
-							
-							Text(line.lineText!)
-								.frame(alignment: .trailing)
-							
-							Spacer()
-								.frame(minWidth: 5, maxWidth: 10)
-							
-							Text(line.lineSign!)
-								.frame(alignment: .trailing)
-							
-							Spacer()
-								.frame(minWidth: 2, maxWidth: 2)
+							.frame(maxWidth: .infinity)
+							.foregroundColor(Color.black)
 						}
-						.frame(maxWidth: .infinity)
-						.foregroundColor(Color.black)
+						.background(Color.white)
+					} header: {
+						Text("Tape Roll")
+					} footer: {
+						Text("Current Total: \(runningTotal)")
 					}
-					.background(Color.white)
 
 				}
+				.listStyle(.sidebar)
 				
 				Text(currentNumber)
 					.font(.system(size: 20, weight: .light))
@@ -440,6 +485,12 @@ struct ContentView: View {
 	func editNote(lineID: UUID) {
 		// Pops up a view that allows text to be entered and/or edited
 		// Also needs cancel and done buttons.
+		if logRoll.contains(where: {$0.id == lineID}){
+//			$0.lineNotes = ""
+			showingPopover = false
+		} else {
+			showingPopover = true
+		}
 	}
 }
 
