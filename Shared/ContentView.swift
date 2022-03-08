@@ -9,9 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
 	
-	struct logLine: Identifiable {
+	class logLine: Identifiable, ObservableObject {
 		var id = UUID()
-		var lineNotes: String?
+		var lineNotes: String? {
+			willSet {
+				objectWillChange.send()
+			}
+		}
 		var lineText: String?
 		var lineSign: String?
 		var lineValue: Double?
@@ -45,86 +49,83 @@ struct ContentView: View {
 		VStack {
 
 			Section {
-				
-				List {
-					Section {
-						ForEach(logRoll) { line in
-							HStack(spacing: 5) {
-								Button {
-									showingPopover = true
-									editNote(lineID: line.id)
-								} label: {
-									Image(systemName: "pencil.circle")
-								}
-								.frame(alignment: .leading)
-								.popover(isPresented: $showingPopover) {
-									VStack {
-										
-										Text("Enter the note for this line")
-										TextField("Enter the note for this line", text: $tempNote)
-										HStack {
-											Button {
-												showingPopover = false
-											} label: {
-												Text("Cancel")
-											}
-											.keyboardShortcut(.cancelAction)
+				ScrollViewReader { proxy in
+					List {
+						Section {
+							ForEach(logRoll) { line in
+								HStack(spacing: 5) {
+									Button {
+										showingPopover = true
+									} label: {
+										Image(systemName: "pencil.circle")
+									}
+									.frame(alignment: .leading)
+									.popover(isPresented: $showingPopover) {
+										VStack {
 											
+											TextField("Enter the note for this line", text: $tempNote)
+												.foregroundColor(.white)
+												.padding()
+												
 											Button {
+												editNote(lineID: line.id, noteString: tempNote)
 												showingPopover = false
 											} label: {
 												Text("Done")
 											}
 											.keyboardShortcut(.defaultAction)
 										}
+										.padding()
 									}
+								
+									Spacer()
+										.frame(minWidth: 5, maxWidth: 15)
+									
+									Text(line.lineNotes!)
+										.frame(alignment: .center)
+									
+									Spacer()
+										.frame(minWidth: 5, maxWidth: 500)
+									
+									Text(line.lineText!)
+										.frame(alignment: .trailing)
+									
+									Spacer()
+										.frame(minWidth: 5, maxWidth: 10)
+									
+									switch line.lineSign! {
+										case "+":
+											Image(systemName: "plus")
+										case "-":
+											Image(systemName: "minus")
+										case "/":
+											Image(systemName: "divide")
+										case "X":
+											Image(systemName: "multiply")
+										case "=":
+											Image(systemName: "equal")
+										default:
+											Image(systemName: "scroll")
+									}
+																
+									Spacer()
+										.frame(minWidth: 2, maxWidth: 2)
 								}
-							
-								Spacer()
-									.frame(minWidth: 5, maxWidth: 15)
-								
-								Text(line.lineNotes!)
-									.frame(alignment: .center)
-								
-								Spacer()
-									.frame(minWidth: 5, maxWidth: 500)
-								
-								Text(line.lineText!)
-									.frame(alignment: .trailing)
-								
-								Spacer()
-									.frame(minWidth: 5, maxWidth: 10)
-								
-								switch line.lineSign! {
-									case "+":
-										Image(systemName: "plus")
-									case "-":
-										Image(systemName: "minus")
-									case "/":
-										Image(systemName: "divide")
-									case "X":
-										Image(systemName: "multiply")
-									case "=":
-										Image(systemName: "equal")
-									default:
-										Image(systemName: "scroll")
-								}
-															
-								Spacer()
-									.frame(minWidth: 2, maxWidth: 2)
+								.frame(maxWidth: .infinity)
+								.foregroundColor(Color.black)
 							}
-							.frame(maxWidth: .infinity)
-							.foregroundColor(Color.black)
-						}
-						.background(Color.white)
-					} header: {
-						Text("Tape Roll")
-					} footer: {
-						Text("Current Total: \(runningTotal)")
-					}
-
+							.background(Color.white)
+						} header: {
+							Text("Tape Roll")
+						} 					}
+					.listStyle(.sidebar)
 				}
-				.listStyle(.sidebar)
+				
+				Spacer()
+				
+				Text("Current Total: \(runningTotal)")
+					.font(.caption)
+					.foregroundColor(.blue)
 				
 				Text(currentNumber)
 					.font(.system(size: 20, weight: .light))
@@ -411,6 +412,10 @@ struct ContentView: View {
 			
 			Spacer()
 			
+			TextField("Enter a note for this line...", text: $tempNote)
+			
+			Spacer()
+			
 		}
 		.frame(minWidth: 300, maxWidth: 600, maxHeight: .infinity)
     }
@@ -435,6 +440,7 @@ struct ContentView: View {
 				currentNumber = "0"
 				runningTotal = 0.0
 				logRoll.append(logLine(lineNotes: defaultLogLine.lineNotes, lineText: defaultLogLine.lineText, lineSign: defaultLogLine.lineSign, lineValue: defaultLogLine.lineValue))
+				tempNote = ""
 //			Switch the sign for the current number
 			case "+-":
 				if currentNumber[currentNumber.startIndex] == "-" {
@@ -449,31 +455,41 @@ struct ContentView: View {
 //			Handle addition
 			case "+":
 				runningTotal += Double(currentNumber)!
-				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "+", lineValue: runningTotal))
+				logRoll.append(logLine(lineNotes: tempNote, lineText: currentNumber, lineSign: "+", lineValue: runningTotal))
 				currentNumber = "0"
+				tempNote = ""
 //			Handle subtraction
 			case "-":
 				runningTotal = runningTotal - Double(currentNumber)!
-				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "-", lineValue: runningTotal))
+				logRoll.append(logLine(lineNotes: tempNote, lineText: currentNumber, lineSign: "-", lineValue: runningTotal))
 				currentNumber = "0"
+				tempNote = ""
 //			Handle multiplication
 			case "*":
 				runningTotal = runningTotal * Double(currentNumber)!
-				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "X", lineValue: runningTotal))
+				logRoll.append(logLine(lineNotes: tempNote, lineText: currentNumber, lineSign: "X", lineValue: runningTotal))
 				currentNumber = "0"
+				tempNote = ""
 //			Handle division
 			case "/":
 				runningTotal = runningTotal / Double(currentNumber)!
-				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "/", lineValue: runningTotal))
+				logRoll.append(logLine(lineNotes: tempNote, lineText: currentNumber, lineSign: "/", lineValue: runningTotal))
 				currentNumber = "0"
+				tempNote = ""
 //			Handle percentages
 			case "%":
 				runningTotal = runningTotal * (Double(currentNumber)!/100)
-				logRoll.append(logLine(lineNotes: "", lineText: currentNumber, lineSign: "%", lineValue: runningTotal))
+				logRoll.append(logLine(lineNotes: tempNote, lineText: currentNumber, lineSign: "%", lineValue: runningTotal))
 				currentNumber = "0"
+				tempNote = ""
 //			Handle totalling the current run
 			case "=":
-				logRoll.append(logLine(lineNotes: "End of Roll", lineText: String(runningTotal), lineSign: "=", lineValue: runningTotal))
+				if tempNote == "" {
+					logRoll.append(logLine(lineNotes: "End of Roll", lineText: String(runningTotal), lineSign: "=", lineValue: runningTotal))
+				} else {
+					logRoll.append(logLine(lineNotes: tempNote, lineText: String(runningTotal), lineSign: "=", lineValue: runningTotal))
+				}
+				tempNote = ""
 //			Error trapping. This should never be triggered.
 			default:
 				print("An error occurred. You shouldn't be able to get here.")
@@ -482,14 +498,16 @@ struct ContentView: View {
 	
 	/// Function for editing the notes on a line of the tape roll
 	/// - Parameter lineID: This is the UUID assigned to the line when created.
-	func editNote(lineID: UUID) {
+	func editNote(lineID: UUID, noteString: String) {
 		// Pops up a view that allows text to be entered and/or edited
 		// Also needs cancel and done buttons.
-		if logRoll.contains(where: {$0.id == lineID}){
-//			$0.lineNotes = ""
-			showingPopover = false
-		} else {
-			showingPopover = true
+		
+		for line in logRoll {
+			if line.id == lineID {
+				line.lineNotes = noteString
+				tempNote = ""
+				showingPopover = false
+			}
 		}
 	}
 }
