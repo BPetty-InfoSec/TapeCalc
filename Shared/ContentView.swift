@@ -49,80 +49,83 @@ struct ContentView: View {
 		VStack {
 
 			Section {
-				
-				List {
-					Section {
-						ForEach(logRoll) { line in
-							HStack(spacing: 5) {
-								Button {
-									showingPopover = true
-								} label: {
-									Image(systemName: "pencil.circle")
-								}
-								.frame(alignment: .leading)
-								.popover(isPresented: $showingPopover) {
-									VStack {
-										
-										TextField("Enter the note for this line", text: $tempNote)
-											.foregroundColor(.white)
-											.padding()
-											
-										Button {
-											editNote(lineID: line.id, noteString: tempNote)
-											showingPopover = false
-										} label: {
-											Text("Done")
-										}
-										.keyboardShortcut(.defaultAction)
+				ScrollViewReader { proxy in
+					List {
+						Section {
+							ForEach(logRoll) { line in
+								HStack(spacing: 5) {
+									Button {
+										showingPopover = true
+									} label: {
+										Image(systemName: "pencil.circle")
 									}
-									.padding()
+									.frame(alignment: .leading)
+									.popover(isPresented: $showingPopover) {
+										VStack {
+											
+											TextField("Enter the note for this line", text: $tempNote)
+												.foregroundColor(.white)
+												.padding()
+												
+											Button {
+												editNote(lineID: line.id, noteString: tempNote)
+												showingPopover = false
+											} label: {
+												Text("Done")
+											}
+											.keyboardShortcut(.defaultAction)
+										}
+										.padding()
+									}
+								
+									Spacer()
+										.frame(minWidth: 5, maxWidth: 15)
+									
+									Text(line.lineNotes!)
+										.frame(alignment: .center)
+									
+									Spacer()
+										.frame(minWidth: 5, maxWidth: 500)
+									
+									Text(line.lineText!)
+										.frame(alignment: .trailing)
+									
+									Spacer()
+										.frame(minWidth: 5, maxWidth: 10)
+									
+									switch line.lineSign! {
+										case "+":
+											Image(systemName: "plus")
+										case "-":
+											Image(systemName: "minus")
+										case "/":
+											Image(systemName: "divide")
+										case "X":
+											Image(systemName: "multiply")
+										case "=":
+											Image(systemName: "equal")
+										default:
+											Image(systemName: "scroll")
+									}
+																
+									Spacer()
+										.frame(minWidth: 2, maxWidth: 2)
 								}
-							
-								Spacer()
-									.frame(minWidth: 5, maxWidth: 15)
-								
-								Text(line.lineNotes!)
-									.frame(alignment: .center)
-								
-								Spacer()
-									.frame(minWidth: 5, maxWidth: 500)
-								
-								Text(line.lineText!)
-									.frame(alignment: .trailing)
-								
-								Spacer()
-									.frame(minWidth: 5, maxWidth: 10)
-								
-								switch line.lineSign! {
-									case "+":
-										Image(systemName: "plus")
-									case "-":
-										Image(systemName: "minus")
-									case "/":
-										Image(systemName: "divide")
-									case "X":
-										Image(systemName: "multiply")
-									case "=":
-										Image(systemName: "equal")
-									default:
-										Image(systemName: "scroll")
-								}
-															
-								Spacer()
-									.frame(minWidth: 2, maxWidth: 2)
+								.frame(maxWidth: .infinity)
+								.foregroundColor(Color.black)
 							}
-							.frame(maxWidth: .infinity)
-							.foregroundColor(Color.black)
-						}
-						.background(Color.white)
-					} header: {
-						Text("Tape Roll")
-					} footer: {
-						Text("Current Total: \(runningTotal)")
-					}
-
+							.background(Color.white)
+						} header: {
+							Text("Tape Roll")
+						} 					}
+					.listStyle(.sidebar)
 				}
-				.listStyle(.sidebar)
+				
+				Spacer()
+				
+				Text("Current Total: \(runningTotal)")
+					.font(.caption)
+					.foregroundColor(.blue)
 				
 				Text(currentNumber)
 					.font(.system(size: 20, weight: .light))
